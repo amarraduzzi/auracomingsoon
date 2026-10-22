@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#FE8AAD">
+<title>Aura · Trois ouvertures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;1,300&family=Poppins:wght@400;500;600&display=swap">
+<style>
+:root { --rose: #FE8AAD; --creme: #FFF5EA; --prune: #44263D; --nacre: #FFECF0; --beurre: #F5E7A3; --lilas: #D8CFF2; --sauge: #C7D7C0; }
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; min-height: 100svh; background: var(--rose); color: var(--prune); font: 400 1rem/1.55 Poppins, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+body::before { content: ""; position: fixed; inset: 0; z-index: -1; background: radial-gradient(700px 600px at 75% 20%, rgba(255,236,240,.6), rgba(255,236,240,0) 70%); }
+main { width: 100%; max-width: 1120px; margin: 0 auto; padding: max(28px, env(safe-area-inset-top)) 16px 48px; }
+.eyebrow { font: 500 .72rem/1.3 Poppins, sans-serif; letter-spacing: .18em; text-transform: uppercase; }
+h1 { font: 300 clamp(2.8rem, 8vw, 5rem)/.98 Cormorant, Georgia, serif; margin: .9rem 0 .8rem; letter-spacing: -.01em; }
+h1 em { font-style: italic; }
+.lead { margin: 0 0 2.4rem; max-width: 50ch; font-weight: 500; }
+.grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); }
+a.card { position: relative; display: flex; flex-direction: column; background: var(--creme); color: var(--prune); text-decoration: none; padding: 26px 24px 24px; border-radius: 6px; box-shadow: 0 18px 30px -18px rgba(68,38,61,.65); transition: transform .3s cubic-bezier(.3,.9,.3,1), box-shadow .3s; }
+a.card:hover { transform: translateY(-5px); box-shadow: 0 26px 36px -20px rgba(68,38,61,.7); }
+.dot { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font: italic 300 1.5rem/1 Cormorant, serif; margin-bottom: 1.1rem; }
+.d1 { background: var(--beurre); } .d2 { background: var(--lilas); } .d3 { background: var(--sauge); }
+h2 { font: italic 300 2.1rem/1.02 Cormorant, Georgia, serif; margin: 0 0 .6rem; }
+a.card p { margin: 0 0 1.4rem; font-size: .92rem; flex: 1; }
+.go { align-self: flex-start; display: inline-flex; align-items: center; gap: .6rem; background: var(--prune); color: var(--creme); padding: .8rem 1.3rem; border-radius: 999px; font-size: .9rem; font-weight: 500; }
+.go svg { width: 1.05em; height: 1.05em; transition: transform .25s; }
+a.card:hover .go svg { transform: translateX(4px); }
+.note { margin-top: 2rem; font-size: .85rem; opacity: .85; max-width: 60ch; }
+</style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">Aura · Page « Bientôt »</p>
+  <h1>Trois façons d’ouvrir <em>la box.</em></h1>
+  <p class="lead">Même message, même formulaire, mêmes questions qui flottent. Seule l’animation d’ouverture change. Ouvrez chaque option et laissez-la jouer depuis le début.</p>
+  <div class="grid">
+    <a class="card" href="optie-1/"><span class="dot d1">1</span><h2>Cinéma 3D</h2><p>Une vraie box en 3D, avec ruban et sceau, tombe dans l’écran, rebondit, puis s’ouvre dans un halo de lumière et de cœurs.</p><span class="go">Voir l’option<svg viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+    <a class="card" href="optie-2/"><span class="dot d2">2</span><h2>Halo</h2><p>Un point de lumière devient un cœur. Au premier battement, une fleur de lumière s’ouvre et une poussière dorée se met à tourner.</p><span class="go">Voir l’option<svg viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+    <a class="card" href="optie-3/"><span class="dot d3">3</span><h2>Origami</h2><p>Une feuille à plat se plie sous vos yeux pour devenir la box. Le couvercle se referme, le sceau se pose, puis la box s’ouvre.</p><span class="go">Voir l’option<svg viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+  </div>
+  <p class="note">Le petit menu en bas à gauche de chaque option permet de passer de l’une à l’autre.</p>
+</main>
+</body>
+</html>
