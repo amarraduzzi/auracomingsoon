@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Aura · 3 opties</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;1,300&family=Poppins:wght@400;500&display=swap">
+<style>
+:root { --rose: #FE8AAD; --creme: #FFF5EA; --prune: #44263D; --nacre: #FFECF0; }
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; background: var(--rose); color: var(--prune); font: 400 1rem/1.5 Poppins, system-ui, sans-serif; display: grid; place-items: center; padding: 32px 16px; }
+main { width: 100%; max-width: 1040px; }
+h1 { font: italic 300 clamp(2.4rem, 7vw, 4rem)/1 Cormorant, Georgia, serif; margin: 0 0 .4em; }
+p.lead { margin: 0 0 2rem; max-width: 46ch; }
+.grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+a.card { display: block; background: var(--creme); color: var(--prune); text-decoration: none; padding: 24px; border-radius: 6px; box-shadow: 0 18px 30px -18px rgba(68,38,61,.65); transition: transform .25s; }
+a.card:hover { transform: translateY(-4px); }
+.n { font: 500 .75rem/1 Poppins, sans-serif; letter-spacing: .16em; text-transform: uppercase; opacity: .7; }
+h2 { font: italic 300 2rem/1.05 Cormorant, Georgia, serif; margin: .5rem 0 .6rem; }
+a.card p { margin: 0; font-size: .92rem; }
+.go { display: inline-block; margin-top: 1.1rem; background: var(--prune); color: var(--creme); padding: .7rem 1.2rem; border-radius: 999px; font-size: .9rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Drie openingen voor Aura</h1>
+  <p class="lead">Interne keuzepagina. Elke optie gebruikt dezelfde tekst, het vraagformulier en de zwevende vragen. Alleen de animatie in het midden verschilt.</p>
+  <div class="grid">
+    <a class="card" href="../optie-1/"><span class="n">Optie 1</span><h2>Cinéma 3D</h2><p>Een echte 3D-cadeaubox met lint en zegel valt in beeld, stuitert, en het deksel gaat open met licht en hartjes.</p><span class="go">Bekijk</span></a>
+    <a class="card" href="../optie-2/"><span class="n">Optie 2</span><h2>Halo</h2><p>Geen box. Een lichtpunt wordt een hart, het eerste hartslag opent een bloem van licht met zwevend stof.</p><span class="go">Bekijk</span></a>
+    <a class="card" href="../optie-3/"><span class="n">Optie 3</span><h2>Origami</h2><p>Een platte uitslag vouwt zich op tot een box, het deksel sluit, het zegel landt en de box gaat open.</p><span class="go">Bekijk</span></a>
+  </div>
+</main>
+</body>
+</html>

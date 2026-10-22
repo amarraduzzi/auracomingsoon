@@ -14,3 +14,11 @@ Bovenaan het script in `index.html` staat `CONFIG`:
 4. Deploy. Daarna eventueel eigen domein onder Custom domains.
 
 Elke push naar `main` zet de pagina automatisch opnieuw online.
+
+## Drie animatie-opties (ter keuze)
+- `/opties/`: keuzepagina met links naar de drie varianten.
+- `/optie-1/`: Cinéma 3D. Echte 3D-box (three.js, staat in `/vendor/`).
+- `/optie-2/`: Halo. Hart dat klopt en een bloem van licht.
+- `/optie-3/`: Origami. Uitslag vouwt zich op tot een box.
+
+De hoofdpagina `index.html` is nog de oude versie. Na de keuze wordt de winnende optie de nieuwe `index.html` en verdwijnen de andere opties en de knopjes linksonder.
