@@ -215,6 +215,17 @@ html[lang="ar"] .mq-group span { font-style: normal; font-weight: 400; }
 .cine-fallback svg { width: 60%; fill: currentColor; }
 .cine.gl-off .cine-fallback { display: grid; }
 
+.hg { display: flex; align-items: center; gap: 1.2rem; margin-top: 1.5rem; }
+.hg-wrap { position: relative; flex: none; width: 140px; height: 210px; transition: transform 1.3s cubic-bezier(.5,0,.2,1.25); animation: hgfloat 6s ease-in-out infinite; filter: drop-shadow(0 16px 18px rgba(68,38,61,.28)); }
+.hg-wrap.flip { transform: rotate(180deg); }
+.hg-wrap canvas { width: 100%; height: 100%; display: block; }
+@keyframes hgfloat { 0%, 100% { translate: 0 0; } 50% { translate: 0 -6px; } }
+.hg-txt { display: grid; gap: .1rem; }
+.hg-txt b { font: 300 clamp(3.6rem, 13vw, 5.2rem)/.9 var(--f-display); font-variant-numeric: lining-nums; }
+.hg-txt span { font: 500 .78rem/1.2 var(--f-body); letter-spacing: .18em; text-transform: uppercase; margin-top: .4rem; }
+.hg-txt small { font: 400 .95rem/1.3 var(--f-body); opacity: .85; }
+html[dir="rtl"] .hg-txt span { letter-spacing: 0; text-transform: none; font-size: .95rem; }
+@media (min-width: 940px) { .hg-wrap { width: 160px; height: 240px; } }
 </style>
 </head>
 <body>
@@ -241,6 +252,7 @@ html[lang="ar"] .mq-group span { font-style: normal; font-weight: 400; }
       <p class="eyebrow rise" style="--d:.2s" data-i="eb">Bientôt · Grandir en douceur</p>
       <h1 class="display rise" style="--d:.3s" data-i="h1">Aura arrive, <em>tout doux.</em></h1>
       <p class="sub rise" style="--d:.45s" data-i="sub">La première box au Maroc pour accompagner les jeunes filles.</p>
+      <div class="hg rise" style="--d:.6s"><div class="hg-wrap" id="hgWrap"><canvas id="hgc" width="320" height="480" aria-hidden="true"></canvas></div><p class="hg-txt" id="hgTxt" aria-live="polite"></p></div>
     </div>
 
     <div class="orbitcol">
@@ -305,12 +317,24 @@ html[lang="ar"] .mq-group span { font-style: normal; font-weight: 400; }
 
 <script type="importmap">{ "imports": { "three": "../vendor/three.module.min.js" } }</script>
 <link rel="modulepreload" href="../vendor/three.module.min.js">
-<script>window.AURA_OPEN_AT = 2300; window.AURA_CLOSE_AFTER = 2600;</script>
+<script>
+window.AURA_LAUNCH = "2026-12-01"; window.AURA_START = "2026-10-22"; /* placeholder dates */
+const _d = s => new Date(s + "T00:00:00");
+function daysLeft() { const q = new URLSearchParams(location.search).get("days"); if (q !== null && q !== "" && !isNaN(+q)) return Math.max(0, Math.round(+q)); return Math.max(0, Math.ceil((_d(window.AURA_LAUNCH) - Date.now()) / 864e5)); }
+window.AURA_P = function () { const tot = Math.max(1, Math.round((_d(window.AURA_LAUNCH) - _d(window.AURA_START)) / 864e5)); return Math.min(1, Math.max(0, 1 - daysLeft() / tot)); };
+window.AURA_OPEN_AT = 2300; window.AURA_CLOSE_AFTER = daysLeft() <= 0 ? -1 : 2600;
+window.AURA_TEXT = {
+  fr: { hgDay: "jour", hgDays: "jours", hgAfter: "avant l’ouverture", hgOpen: "c’est ouvert" },
+  en: { hgDay: "day", hgDays: "days", hgAfter: "until we open", hgOpen: "it’s open" },
+  ar: { hgDay: "يوم", hgDays: "يوماً", hgAfter: "حتى الافتتاح", hgOpen: "تفتح اليوم" }
+};
+function renderHg() { const el = document.getElementById("hgTxt"); if (!el) return; const t = T[lang], d = daysLeft(); el.innerHTML = d <= 0 ? "<b>♡</b><span>" + t.hgOpen + "</span>" : "<b>" + d + "</b><span>" + (d === 1 ? t.hgDay : t.hgDays) + "</span><small>" + t.hgAfter + "</small>"; }
+</script>
 
 <script>
 /* ============ À régler ============ */
 const CONFIG = {
-  launchDate: null,   // ex. "2026-12-01" → affiche « Ouverture dans N jours ». null = « Ouverture bientôt ».
+  launchDate: window.AURA_LAUNCH,   // ex. "2026-12-01" → affiche « Ouverture dans N jours ». null = « Ouverture bientôt ».
   endpoint: ""        // URL qui reçoit les e-mails en POST (JSON {email, lang}), ex. Formspree / Google Apps Script. Vide = enregistré seulement sur cet appareil (démo).
 };
 
@@ -366,14 +390,14 @@ const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { ret
 /* ============ Langue ============ */
 function chipText() {
   const t = T[lang]; if (!CONFIG.launchDate) return t.chip;
-  const d = Math.ceil((new Date(CONFIG.launchDate + "T00:00:00") - Date.now()) / 864e5);
+  const d = daysLeft();
   if (isNaN(d)) return t.chip; if (d <= 0) return t.chipToday; if (d === 1) return t.chipDay; return t.chipDays.replace("{n}", d);
 }
 function fill(el) { const k = el.dataset.i; if (k && T[lang][k] != null) el.innerHTML = T[lang][k]; }
 function setLang(l, persist) {
   lang = T[l] ? l : "fr"; const t = T[lang], h = document.documentElement;
   h.lang = lang; h.dir = lang === "ar" ? "rtl" : "ltr"; document.title = t.title;
-  $$("[data-i]").forEach(fill);
+  $$("[data-i]").forEach(fill); renderHg();
   $("#chipTxt").textContent = chipText();
   $$("[data-ph]").forEach(e => e.placeholder = t[e.dataset.ph]);
   $$("[data-al]").forEach(e => e.setAttribute("aria-label", t[e.dataset.al]));
@@ -532,6 +556,44 @@ setLang(store.get("aura_lang") || "fr");
 (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() => { measure(); });
 measure(); requestAnimationFrame(frame); intro();
 window.AURA = { setOpen, burst, get lang() { return lang; }, T };
+
+(function () {
+  const cv = document.getElementById("hgc"); if (!cv) return;
+  const g = cv.getContext("2d"), wrap = document.getElementById("hgWrap"), RED = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const hw = y => { const t = (y < 120 ? 120 - y : y - 120) / 98; return 5 + 43 * Math.sin(Math.min(t * 1.3, 1) * Math.PI / 2); };
+  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const slots = [];
+  for (let y = 211; y >= 134; y -= 9.4) { const h = hw(y) - 6, n = Math.max(1, Math.floor(2 * h / 12.5)); for (let i = 0; i < n; i++) slots.push({ x: 80 - h + (i + .5) * (2 * h / n) + (rnd() - .5) * 2.4, y: y + (rnd() - .5) * 2, s: 11.5 + rnd() * 3, c: Math.floor(rnd() * 5) }); }
+  const N = slots.length, cols = ["#FE8AAD", "#D8CFF2", "#F5E7A3", "#C7D7C0", "#E3749A"];
+  const heart = new Path2D("M50 90C44 84 4 56 4 28 4 12 16 2 29 2c9 0 17 5 21 13C54 7 62 2 71 2c13 0 25 10 25 26 0 28-40 56-46 62z");
+  const glass = new Path2D(); glass.moveTo(32, 22); for (let y = 22; y <= 218; y += 2) glass.lineTo(80 - hw(y), y); for (let y = 218; y >= 22; y -= 2) glass.lineTo(80 + hw(y), y); glass.closePath();
+  const drawHeart = (x, y, s, c, a) => { g.save(); g.globalAlpha = a == null ? 1 : a; g.translate(x - s / 2, y - s * .46); g.scale(s / 100, s / 100); g.fillStyle = cols[c]; g.fill(heart); g.restore(); };
+  const P = window.AURA_P(); const target = Math.round(P * N); let shown = RED ? target : 0, fall = [], acc = 0, last = performance.now(), flipped = false;
+  function plate(y) { g.fillStyle = "#44263D"; g.beginPath(); (g.roundRect ? g.roundRect(16, y, 128, 13, 6) : g.rect(16, y, 128, 13)); g.fill(); g.fillStyle = "rgba(254,138,173,.55)"; g.fillRect(24, y + 3, 112, 1.5); }
+  function frame(now) {
+    const dt = Math.min(.05, (now - last) / 1000); last = now;
+    if (shown < target) shown = Math.min(target, shown + dt * 22);
+    const b = Math.floor(shown + 1e-6), top = N - b;
+    if (!RED && b < N) { acc += dt; if (acc > (shown < target ? .05 : .9)) { acc = 0; fall.push({ x: 80 + (rnd() - .5) * 3, y: 118, v: 60, c: Math.floor(rnd() * 5) }); } }
+    const ty = slots[Math.min(b, N - 1)].y;
+    for (const f of fall) { f.v += 900 * dt; f.y += f.v * dt; } fall = fall.filter(f => f.y < ty);
+    g.clearRect(0, 0, 160, 240);
+    g.strokeStyle = "rgba(68,38,61,.5)"; g.lineWidth = 3; g.lineCap = "round"; g.beginPath(); g.moveTo(24, 18); g.lineTo(24, 222); g.moveTo(136, 18); g.lineTo(136, 222); g.stroke();
+    g.fillStyle = "rgba(255,236,240,.34)"; g.fill(glass);
+    for (let i = 0; i < top; i++) { const s = slots[N - 1 - i]; drawHeart(s.x, 240 - s.y, s.s, s.c); }
+    for (let i = 0; i < b; i++) { const s = slots[i]; drawHeart(s.x, s.y, s.s, s.c); }
+    if (b < N && !RED) { g.strokeStyle = "rgba(254,138,173,.9)"; g.lineWidth = 1.4; g.beginPath(); g.moveTo(80, 116); g.lineTo(80, Math.min(ty, 150)); g.stroke(); }
+    for (const f of fall) drawHeart(f.x, f.y, 11, f.c);
+    g.strokeStyle = "#FFECF0"; g.lineWidth = 2.4; g.lineJoin = "round"; g.stroke(glass);
+    g.strokeStyle = "rgba(255,255,255,.55)"; g.lineWidth = 3; g.lineCap = "round";
+    for (const [a, z] of [[32, 100], [138, 208]]) { g.beginPath(); for (let y = a; y <= z; y += 3) { const x = 80 - hw(y) + 7; y === a ? g.moveTo(x, y) : g.lineTo(x, y); } g.stroke(); }
+    plate(6); plate(221);
+    if (!flipped && target >= N && b >= N) { flipped = true; const go = () => { wrap.classList.add("flip"); setTimeout(() => { if (window.AURA) { AURA.setOpen(true); const c = boxCenter(); AURA.burst(c.x, c.y - 20, 16); } }, RED ? 0 : 1000); }; RED ? go() : setTimeout(go, 600); }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
 </script>
 <script type="module">
 /* ===== Optie 1 · Cinéma 3D : la box tombe, rebondit, le ruban brille, le couvercle s'ouvre ===== */
