@@ -254,20 +254,29 @@ h1 em.out{opacity:0;transform:translateY(.15em)}
   .panel{min-height:0}textarea.field{min-height:3.6rem}
 }
 @media (max-height:760px){.hint i{display:none}.hint{margin-top:.6rem}}
-/* ---- berichtbalk ---- */
-.panel{background:none;box-shadow:none;padding:0;border-radius:0;max-width:30rem}
-.panel h2{font-size:clamp(1.3rem,3.2vw,1.75rem);margin-bottom:.7rem}
-.bar{display:flex;align-items:flex-end;gap:.4rem;padding:.4rem .4rem .4rem 1.2rem;border-radius:1.9rem;background:var(--creme);box-shadow:0 14px 30px -16px rgba(68,38,61,.55);border:1.5px solid transparent;transition:border-color .2s,box-shadow .2s}
-.bar:focus-within{border-color:var(--rose-deep);box-shadow:0 14px 30px -14px rgba(68,38,61,.6),0 0 0 4px rgba(255,255,255,.35)}
-.bar .field{flex:1;min-width:0;margin:0;border:0;box-shadow:none!important;padding:.65rem 0;min-height:0;height:auto;max-height:96px;font-size:1.1rem;line-height:1.35;overflow-y:auto}
-.btn.send{flex:none;width:46px;min-height:46px;height:46px;padding:0;border-radius:50%;margin:0;align-self:flex-end}
-.panel .btn.send{width:46px;margin:0}
-.panel .row{margin-top:.55rem;padding-inline:1.2rem;flex-wrap:nowrap;align-items:flex-start}
-.panel .help{margin:0;font-size:.8rem;opacity:.85}
-.panel .count{visibility:hidden;flex:none}
-.panel .err{margin:.2rem 1.2rem 0;min-height:1.2em}
-.panel .link{margin-inline:1.2rem;padding:.3rem 0;font-size:.82rem}
-.panel [data-s="mail"] .bar{margin-top:.2rem}
+/* ---- kaartje bij de doos ---- */
+.cta{display:inline-flex;align-items:center;gap:.85rem;min-height:58px;padding:0 1.9rem 0 1.5rem;margin-top:1.3rem;border:0;border-radius:999px;background:var(--prune);color:var(--creme);font:500 1.05rem/1 var(--f-body);cursor:pointer;box-shadow:0 14px 28px -14px rgba(68,38,61,.75),0 0 0 0 rgba(254,138,173,.5);animation:ctaglow 2.8s ease-out infinite;transition:transform .25s cubic-bezier(.3,.9,.3,1)}
+.cta:hover{transform:translateY(-2px) scale(1.02)}
+.cta svg{width:22px;height:20px;fill:var(--rose);animation:beat 3.6s ease-in-out infinite}
+@keyframes ctaglow{70%{box-shadow:0 14px 28px -14px rgba(68,38,61,.75),0 0 0 16px rgba(254,138,173,0)}100%{box-shadow:0 14px 28px -14px rgba(68,38,61,.75),0 0 0 0 rgba(254,138,173,0)}}
+.panel{position:absolute;left:50%;bottom:.2rem;z-index:30;width:min(94%,25rem);max-width:none;padding:1.5rem 1.4rem 1.1rem;border-radius:10px;background:linear-gradient(165deg,#FFF9F1,var(--creme));box-shadow:0 30px 50px -22px rgba(68,38,61,.7),0 2px 0 rgba(255,255,255,.7) inset;opacity:0;visibility:hidden;transform:translateX(-50%) translateY(40px) rotate(-3deg) scale(.9);transform-origin:50% 100%;transition:transform .7s cubic-bezier(.25,.9,.3,1.15),opacity .35s,visibility 0s .7s;min-height:0}
+.panel.show{opacity:1;visibility:visible;transform:translateX(-50%) rotate(-1.2deg);transition:transform .7s cubic-bezier(.25,.9,.3,1.15),opacity .35s,visibility 0s}
+.panel::before{content:"";position:absolute;left:50%;top:-.75rem;width:5.2rem;height:1.5rem;margin-left:-2.6rem;background:var(--beurre);opacity:.92;transform:rotate(-3deg);border-radius:2px;box-shadow:0 2px 6px rgba(68,38,61,.18)}
+.panel .x{position:absolute;right:.7rem;top:.5rem;width:34px;height:34px;border:0;border-radius:50%;background:none;color:var(--prune);font:300 1.7rem/1 var(--f-display);cursor:pointer;opacity:.6}
+.panel .x:hover{opacity:1}
+.panel h2{font-size:clamp(1.45rem,3vw,1.85rem);margin:.2rem 1.6rem .3rem 0}
+.panel .help{margin:0 0 .5rem;font-size:.82rem;opacity:.85}
+.bar{display:flex;flex-direction:column;align-items:stretch;gap:.7rem;padding:0;background:none;border:0;box-shadow:none}
+.bar:focus-within{box-shadow:none;border:0}
+.bar .field{margin:0;padding:0;border:0;box-shadow:none!important;min-height:3.9rem;max-height:none;height:auto;resize:none;background:repeating-linear-gradient(transparent 0 1.85rem,rgba(68,38,61,.22) 1.85rem 1.9rem);font:italic 400 1.3rem/1.9rem var(--f-display);overflow:hidden}
+.panel .row.act{display:flex;flex-wrap:nowrap;align-items:center;justify-content:space-between;gap:.6rem;margin-top:.4rem;padding:0}
+.panel .row.act .link{margin:0;padding:.3rem 0;font-size:.78rem;text-align:start}
+.panel .count{visibility:hidden;font-size:.72rem}
+.panel .err{margin:.2rem 0 0;min-height:1.1em}
+.btn.send{width:auto;height:48px;min-height:48px;padding:0 1.3rem;border-radius:999px;margin:0;align-self:flex-end;flex:none}
+.panel .btn.send{width:auto;margin:0}
+html[dir="rtl"] .panel .x{right:auto;left:.7rem}
+@media (prefers-reduced-motion:reduce){.cta{animation:none}}
 </style>
 </head>
 <body>
@@ -319,23 +328,20 @@ h1 em.out{opacity:0;transform:translateY(.15em)}
       </div>
       <div class="clock" id="clock" role="timer" aria-live="off" dir="ltr"><div><b id="cD">00</b><span data-k="d">jours</span></div><i></i><div><b id="cH">00</b><span data-k="h">heures</span></div><i></i><div><b id="cM">00</b><span data-k="m">min</span></div><i></i><div class="sec"><b id="cS">00</b><span data-k="s">sec</span></div></div>
       <p class="hint eyebrow"><span id="hintTxt" data-i="hint1">Touche la box pour l’ouvrir</span><i></i></p>
-    </div>
-
-    <div class="panelwrap rise" style="--d:.6s">
-      <div class="panel" id="panel" data-state="q">
+      <div class="panel" id="panel" data-state="q"><button class="x" type="button" id="askX" aria-label="Fermer">×</button>
         <form data-s="q" id="qForm" novalidate>
           <h2 class="display" data-i="pT">Pose ta première <em>question.</em></h2>
+          <p class="help" data-i="pH">Sans nom, sans pression. Elle trouvera sa place dans la box.</p>
           <label class="sr" for="qIn" data-i="qLabel">Ta question</label>
-          <div class="bar"><textarea class="field" id="qIn" maxlength="140" rows="1" data-ph="qPh" placeholder="Écris-la avec tes mots…"></textarea><button class="btn send" type="submit" id="qBtn"><span class="sr" data-i="send">Glisser dans la box</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><use href="#s-arr"/></svg></button></div>
-          <div class="row"><p class="help" data-i="pH">Sans nom, sans pression. Elle trouvera sa place dans la box.</p><span class="count" id="qCount" aria-hidden="true">0 / 140</span></div>
+          <div class="bar"><textarea class="field" id="qIn" maxlength="140" rows="2" data-ph="qPh" placeholder="Écris-la avec tes mots…"></textarea></div>
           <p class="err" id="qErr" role="alert"></p>
-          <button class="link" type="button" id="skip" data-i="skip">ou laisse seulement ton e-mail</button>
+          <div class="row act"><button class="link" type="button" id="skip" data-i="skip">ou laisse seulement ton e-mail</button><span class="count" id="qCount" aria-hidden="true">0 / 140</span><button class="btn send" type="submit" id="qBtn"><span data-i="send">Glisser dans la box</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><use href="#s-arr"/></svg></button></div>
         </form>
         <form data-s="mail" id="mForm" novalidate>
           <h2 class="display" id="mTitle" data-i="okT">Elle a <em>sa place.</em></h2>
           <p class="help" data-i="okP">Laisse ton e-mail, on te prévient dès l’ouverture.</p>
           <label class="sr" for="mIn" data-i="mLabel">Ton e-mail</label>
-          <div class="bar"><input class="field" id="mIn" type="email" inputmode="email" autocomplete="email" data-ph="mPh" placeholder="ton@email.com"><button class="btn send" type="submit" id="mBtn"><span class="sr" data-i="notify">Me prévenir</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><use href="#s-arr"/></svg></button></div>
+          <div class="bar"><input class="field" id="mIn" type="email" inputmode="email" autocomplete="email" data-ph="mPh" placeholder="ton@email.com"><button class="btn send" type="submit" id="mBtn"><span data-i="notify">Me prévenir</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><use href="#s-arr"/></svg></button></div>
           <p class="err" id="mErr" role="alert"></p>
         </form>
         <div data-s="done" aria-live="polite">
@@ -345,6 +351,8 @@ h1 em.out{opacity:0;transform:translateY(.15em)}
         </div>
       </div>
     </div>
+
+    <div class="panelwrap rise" style="--d:.6s"><button class="cta" type="button" id="ask"><svg viewBox="0 0 100 92" aria-hidden="true"><use href="#s-heart"/></svg><span data-i="cta">Pose ta question</span></button></div>
   </main>
 
   <div class="marquee" aria-hidden="true"><div class="mq-track">
@@ -383,7 +391,7 @@ const T = {
     chip: "Ouverture bientôt", chipDays: "Ouverture dans {n} jours · tu as le temps", chipDay: "Ouverture demain · tu as le temps", chipToday: "C’est aujourd’hui",
     eb: "Bientôt · Grandir en douceur", h1: "Aura arrive, <em>tout doux.</em>", sub: "La première box au Maroc pour accompagner les jeunes filles.",
     pT: "Pose ta première <em>question.</em>", pH: "Sans nom, sans pression. Elle trouvera sa place dans la box.",
-    qLabel: "Ta question", qPh: "Écris-la avec tes mots…", send: "Glisser dans la box", skip: "ou laisse seulement ton e-mail",
+    cta: "Pose ta question", qLabel: "Ta question", qPh: "Écris-la avec tes mots…", send: "Glisser dans la box", skip: "ou laisse seulement ton e-mail",
     okT: "Elle a <em>sa place.</em>", okP: "Laisse ton e-mail, on te prévient dès l’ouverture.", mT: "On te prévient <em>dès l’ouverture.</em>",
     mLabel: "Ton e-mail", mPh: "ton@email.com", notify: "Me prévenir",
     doneT: "C’est <em>noté.</em>", doneP: "À très vite, tout doux.",
@@ -396,7 +404,7 @@ const T = {
     chip: "Opening soon", chipDays: "Opening in {n} days · you have time", chipDay: "Opening tomorrow · you have time", chipToday: "It’s today",
     eb: "Soon · Growing up, gently", h1: "Aura is coming, <em>softly.</em>", sub: "The first box in Morocco to accompany young girls.",
     pT: "Ask your first <em>question.</em>", pH: "No name, no pressure. It will find its place in the box.",
-    qLabel: "Your question", qPh: "Write it in your own words…", send: "Slip it in the box", skip: "or just leave your email",
+    cta: "Ask your question", qLabel: "Your question", qPh: "Write it in your own words…", send: "Slip it in the box", skip: "or just leave your email",
     okT: "It has <em>its place.</em>", okP: "Leave your email and we’ll tell you the moment we open.", mT: "We’ll tell you <em>when we open.</em>",
     mLabel: "Your email", mPh: "you@email.com", notify: "Notify me",
     doneT: "All <em>noted.</em>", doneP: "See you very soon, softly.",
@@ -409,7 +417,7 @@ const T = {
     chip: "الافتتاح قريباً", chipDays: "الافتتاح بعد {n} يوماً · لديكِ الوقت", chipDay: "الافتتاح غداً · لديكِ الوقت", chipToday: "الافتتاح اليوم",
     eb: "قريباً · أن نكبر بلطف", h1: "أورا قادمة، <em>بلطف.</em>", sub: "أوّل صندوق في المغرب لمرافقة الفتيات.",
     pT: "اطرحي أوّل <em>سؤال.</em>", pH: "بلا اسم وبلا ضغط. سيجد مكانه داخل الصندوق.",
-    qLabel: "سؤالكِ", qPh: "اكتبيه بكلماتكِ…", send: "ضعيه في الصندوق", skip: "أو اتركي بريدكِ الإلكتروني فقط",
+    cta: "اطرحي سؤالكِ", qLabel: "سؤالكِ", qPh: "اكتبيه بكلماتكِ…", send: "ضعيه في الصندوق", skip: "أو اتركي بريدكِ الإلكتروني فقط",
     okT: "له <em>مكانه.</em>", okP: "اتركي بريدكِ الإلكتروني وسنُخبركِ فور الافتتاح.", mT: "سنُخبركِ <em>فور الافتتاح.</em>",
     mLabel: "بريدكِ الإلكتروني", mPh: "you@email.com", notify: "أخبروني",
     doneT: "تمّ <em>التسجيل.</em>", doneP: "إلى لقاء قريب، بلطف.",
@@ -548,11 +556,21 @@ function intro() {
 /* ============ Formulaire : glisser sa question dans la box ============ */
 const panel = $("#panel"), qIn = $("#qIn"), qCount = $("#qCount");
 const state = s => { panel.dataset.state = s; };
-const grow = () => { qIn.style.height = "auto"; qIn.style.height = Math.min(qIn.scrollHeight, 96) + "px"; qCount.style.visibility = qIn.value.length > 90 ? "visible" : "hidden"; };
+const grow = () => { qCount.style.visibility = qIn.value.length > 90 ? "visible" : "hidden"; };
 qIn.addEventListener("input", () => { qCount.textContent = qIn.value.length + " / 140"; $("#qErr").textContent = ""; grow(); });
 qIn.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); $("#qForm").requestSubmit(); } });
 document.addEventListener("click", e => { const c = e.target.closest(".orb.q:not(.mine)"); const t = c && c.querySelector(".qt"); if (t && !qIn.value.trim()) { qIn.value = t.textContent.trim().slice(0, 140); qIn.dispatchEvent(new Event("input")); } });
 $("#skip").addEventListener("click", () => { $("#mTitle").dataset.i = "mT"; fill($("#mTitle")); state("mail"); $("#mIn").focus({ preventScroll: true }); });
+
+/* ---- kaartje opent bij de doos ---- */
+const askBtn = $("#ask");
+function openCard(lid) { panel.classList.add("show"); if (lid) setOpen(true); setTimeout(() => { if (panel.dataset.state === "q") qIn.focus({ preventScroll: true }); }, 450); }
+function closeCard(lid) { panel.classList.remove("show"); if (lid) setOpen(false); }
+askBtn.addEventListener("click", () => openCard(true));
+$("#askX").addEventListener("click", () => closeCard(true));
+document.addEventListener("keydown", e => { if (e.key === "Escape" && panel.classList.contains("show")) closeCard(true); });
+stage.addEventListener("click", () => { stage.classList.contains("open") ? openCard(false) : closeCard(false); });
+new MutationObserver(() => { if (panel.dataset.state === "done") setTimeout(() => closeCard(true), 3200); }).observe(panel, { attributes: true, attributeFilter: ["data-state"] });
 
 $("#qForm").addEventListener("submit", e => {
   e.preventDefault(); const v = qIn.value.trim().replace(/\s+/g, " ");
