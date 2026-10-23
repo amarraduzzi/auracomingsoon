@@ -331,7 +331,7 @@ html[dir="rtl"] .panel .x{right:auto;left:.7rem}
       <div class="panel" id="panel" data-state="q"><button class="x" type="button" id="askX" aria-label="Fermer">×</button>
         <form data-s="q" id="qForm" novalidate>
           <h2 class="display" data-i="pT">Pose ta première <em>question.</em></h2>
-          <p class="help" data-i="pH">Sans nom, sans pression. Elle trouvera sa place dans la box.</p>
+          <p class="help" data-i="pH">Sans nom, sans pression.</p>
           <label class="sr" for="qIn" data-i="qLabel">Ta question</label>
           <div class="bar"><textarea class="field" id="qIn" maxlength="140" rows="2" data-ph="qPh" placeholder="Écris-la avec tes mots…"></textarea></div>
           <p class="err" id="qErr" role="alert"></p>
@@ -390,7 +390,7 @@ const T = {
   fr: {
     chip: "Ouverture bientôt", chipDays: "Ouverture dans {n} jours · tu as le temps", chipDay: "Ouverture demain · tu as le temps", chipToday: "C’est aujourd’hui",
     eb: "Bientôt · Grandir en douceur", h1: "Aura arrive, <em>tout doux.</em>", sub: "La première box au Maroc pour accompagner les jeunes filles.",
-    pT: "Pose ta première <em>question.</em>", pH: "Sans nom, sans pression. Elle trouvera sa place dans la box.",
+    pT: "Pose ta première <em>question.</em>", pH: "Sans nom, sans pression.",
     cta: "Pose ta question", qLabel: "Ta question", qPh: "Écris-la avec tes mots…", send: "Glisser dans la box", skip: "ou laisse seulement ton e-mail",
     okT: "Elle a <em>sa place.</em>", okP: "Laisse ton e-mail, on te prévient dès l’ouverture.", mT: "On te prévient <em>dès l’ouverture.</em>",
     mLabel: "Ton e-mail", mPh: "ton@email.com", notify: "Me prévenir",
@@ -403,7 +403,7 @@ const T = {
   en: {
     chip: "Opening soon", chipDays: "Opening in {n} days · you have time", chipDay: "Opening tomorrow · you have time", chipToday: "It’s today",
     eb: "Soon · Growing up, gently", h1: "Aura is coming, <em>softly.</em>", sub: "The first box in Morocco to accompany young girls.",
-    pT: "Ask your first <em>question.</em>", pH: "No name, no pressure. It will find its place in the box.",
+    pT: "Ask your first <em>question.</em>", pH: "No name, no pressure.",
     cta: "Ask your question", qLabel: "Your question", qPh: "Write it in your own words…", send: "Slip it in the box", skip: "or just leave your email",
     okT: "It has <em>its place.</em>", okP: "Leave your email and we’ll tell you the moment we open.", mT: "We’ll tell you <em>when we open.</em>",
     mLabel: "Your email", mPh: "you@email.com", notify: "Notify me",
@@ -416,7 +416,7 @@ const T = {
   ar: {
     chip: "الافتتاح قريباً", chipDays: "الافتتاح بعد {n} يوماً · لديكِ الوقت", chipDay: "الافتتاح غداً · لديكِ الوقت", chipToday: "الافتتاح اليوم",
     eb: "قريباً · أن نكبر بلطف", h1: "أورا قادمة، <em>بلطف.</em>", sub: "أوّل صندوق في المغرب لمرافقة الفتيات.",
-    pT: "اطرحي أوّل <em>سؤال.</em>", pH: "بلا اسم وبلا ضغط. سيجد مكانه داخل الصندوق.",
+    pT: "اطرحي أوّل <em>سؤال.</em>", pH: "بلا اسم وبلا ضغط.",
     cta: "اطرحي سؤالكِ", qLabel: "سؤالكِ", qPh: "اكتبيه بكلماتكِ…", send: "ضعيه في الصندوق", skip: "أو اتركي بريدكِ الإلكتروني فقط",
     okT: "له <em>مكانه.</em>", okP: "اتركي بريدكِ الإلكتروني وسنُخبركِ فور الافتتاح.", mT: "سنُخبركِ <em>فور الافتتاح.</em>",
     mLabel: "بريدكِ الإلكتروني", mPh: "you@email.com", notify: "أخبروني",
@@ -564,8 +564,8 @@ $("#skip").addEventListener("click", () => { $("#mTitle").dataset.i = "mT"; fill
 
 /* ---- kaartje opent bij de doos ---- */
 const askBtn = $("#ask");
-function openCard(lid) { panel.classList.add("show"); if (lid) setOpen(true); setTimeout(() => { if (panel.dataset.state === "q") qIn.focus({ preventScroll: true }); }, 450); }
-function closeCard(lid) { panel.classList.remove("show"); if (lid) setOpen(false); }
+function openCard(lid) { panel.classList.add("show"); window.AURA_DIM = 1; document.body.classList.add("ask-open"); if (lid) setOpen(true); setTimeout(() => { if (panel.dataset.state === "q") qIn.focus({ preventScroll: true }); }, 450); }
+function closeCard(lid) { panel.classList.remove("show"); window.AURA_DIM = 0; document.body.classList.remove("ask-open"); if (lid) setOpen(false); }
 askBtn.addEventListener("click", () => openCard(true));
 $("#askX").addEventListener("click", () => closeCard(true));
 document.addEventListener("keydown", e => { if (e.key === "Escape" && panel.classList.contains("show")) closeCard(true); });
@@ -825,8 +825,9 @@ function step(now) {
   pivot.rotation.x = S.lid.v;
   seal.scale.setScalar(Math.max(.2, S.seal.v) * (window.AURA_PULSE || 1)); seal.rotation.y = (1 - S.seal.v) * 1.2;
   mRib.emissiveIntensity = Math.max(0, S.shine.v) * 2.4;
-  const g = Math.max(0, S.glow.v); glow.material.opacity = Math.min(1, g) * .95; glow.scale.setScalar(2.4 + g * 1.6 + Math.sin(tt * 2.2) * .08 * g);
-  inner.intensity = g * 7;
+  window.AURA_DIMV = (window.AURA_DIMV || 0) + ((window.AURA_DIM || 0) - (window.AURA_DIMV || 0)) * .08; const dv = window.AURA_DIMV;
+  const g = Math.max(0, S.glow.v); glow.material.opacity = Math.min(1, g) * .95 * (1 - .65 * dv); glow.scale.setScalar(2.4 + g * 1.6 * (1 - .5 * dv) + Math.sin(tt * 2.2) * .08 * g);
+  inner.intensity = g * 7 * (1 - .5 * dv);
   const c = Math.max(0, S.card.v); card.position.y = .45 + c * 1.15; card.rotation.x = -.12 - c * .1; card.position.z = -.05 + c * .18;
   // cœurs
   for (const h of hearts) {
@@ -852,6 +853,18 @@ requestAnimationFrame(step);
 .optnav { position: fixed; left: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 100; display: flex; gap: 4px; padding: 4px; border-radius: 999px; background: rgba(68,38,61,.88); font: 600 12px/1 Poppins, system-ui, sans-serif; direction: ltr; }
 .optnav a { color: #FFECF0; text-decoration: none; padding: 8px 11px; border-radius: 999px; }
 .optnav a[aria-current] { background: #FE8AAD; color: #44263D; }
+/* ---- kaart: rustiger en leesbaarder ---- */
+.glow{transition:opacity .8s ease}
+body.ask-open .glow{opacity:.14}
+.panel{width:min(94%,23rem);bottom:-.5rem;padding:1.3rem 1.3rem 1rem;box-shadow:0 22px 38px -26px rgba(68,38,61,.45),0 2px 0 rgba(255,255,255,.7) inset}
+.panel::before{left:-1.2rem;top:.7rem;margin:0;width:4.2rem;height:1.35rem;transform:rotate(-38deg)}
+.panel h2{margin:.1rem 1.8rem .45rem 0}
+.panel .help{margin:0 0 .7rem}
+.bar .field{min-height:3.8rem}
+.panel .row.act{flex-wrap:wrap;margin-top:.6rem}
+.panel .row.act .count{order:1;flex:1}
+.panel .row.act .btn.send{order:2}
+.panel .row.act .link{order:3;flex:1 1 100%;text-align:center;white-space:nowrap;margin-top:.3rem}
 </style>
 <script>document.querySelectorAll('.optnav [data-n]').forEach(a => { if (location.pathname.includes('optie-' + a.dataset.n)) a.setAttribute('aria-current', 'page'); });</script>
 <script>
