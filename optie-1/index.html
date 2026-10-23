@@ -493,11 +493,11 @@ let hovering = 0;
 const qHTML = k => `<span class="qt" data-i="${k}"></span><span class="qa" data-i="qa"></span>`;
 [ // ring, startfase (rad), snelheid (rad/s, ± = richting)
   { cls: "q", tag: "button", html: qHTML("q1"), ring: 0, phase: 3.6, speed: .075, delay: .2 },
-  { cls: "q", tag: "button", html: qHTML("q2"), ring: 0, phase: 0.2, speed: .075, delay: .45 },
+  { cls: "q mx", tag: "button", html: qHTML("q2"), ring: 0, phase: 0.2, speed: .075, delay: .45 },
   { cls: "q", tag: "button", html: qHTML("q3"), ring: 1, phase: 1.9, speed: -.085, delay: .7 },
-  { cls: "q", tag: "button", html: qHTML("q4"), ring: 1, phase: 5.2, speed: -.085, delay: .95 },
-  { cls: "dot d1", html: '<span data-i="mq2"></span>', ring: 2, phase: 0.9, speed: .11, delay: .35 },
-  { cls: "dot d2", html: '<span data-i="mq3"></span>', ring: 3, phase: 3.9, speed: -.12, delay: .6 },
+  { cls: "q mx", tag: "button", html: qHTML("q4"), ring: 1, phase: 5.2, speed: -.085, delay: .95 },
+  { cls: "dot d1 mx", html: '<span data-i="mq2"></span>', ring: 2, phase: 0.9, speed: .11, delay: .35 },
+  { cls: "dot d2 mx", html: '<span data-i="mq3"></span>', ring: 3, phase: 3.9, speed: -.12, delay: .6 },
   { cls: "dot d3", html: heartHTML, ring: 2, phase: 4.4, speed: .11, delay: .85 },
   { cls: "dot d4", html: heartHTML, ring: 3, phase: 1.2, speed: -.12, delay: 1.05 },
   { cls: "hrt", html: heartHTML, ring: 4, phase: 0.0, speed: .16, delay: .5 }, { cls: "hrt", html: heartHTML, ring: 4, phase: 2.2, speed: .16, delay: .7 }, { cls: "hrt", html: heartHTML, ring: 4, phase: 4.3, speed: .16, delay: .9 },
@@ -865,19 +865,26 @@ body.ask-open .glow{opacity:.14}
 .panel .row.act .count{order:1;flex:1}
 .panel .row.act .btn.send{order:2}
 .panel .row.act .link{order:3;flex:1 1 100%;text-align:center;white-space:nowrap;margin-top:.3rem}
-/* ---- mobiel: alles strak in één scherm (desktop ongewijzigd) ---- */
+/* ---- mobiel: ruim en rustig, scrollen mag (desktop ongewijzigd) ---- */
 @media (max-width:939px){
-  .head{min-height:52px;padding-top:10px}
-  .head .logo{width:84px}
-  .lang button{min-width:38px;height:38px;font-size:.74rem}
-  .hero{gap:.5rem;padding-top:0;padding-bottom:1.2rem}
-  .orbit{width:min(118%,max(15rem,calc((100svh - 25rem) * 1.25)))}
-  .clock{margin-top:.2rem}
+  .head{min-height:60px;padding-top:12px}
+  .head .logo{width:92px}
+  .lang button{min-width:40px;height:40px;font-size:.76rem}
+  .hero{gap:1.5rem;padding:.6rem var(--gut-r) 2.8rem var(--gut)}
+  .orbit{width:100%;margin-inline:0;aspect-ratio:1000/880}
+  .orb.mx{display:none}
   .hint{display:none}
+  .clock{margin-top:1.6rem;gap:.3rem}
+  .clock>div{min-width:3.2rem;padding:.4rem .3rem .38rem;border-radius:.9rem}
+  .clock b{font-size:clamp(1.3rem,5.2vw,1.6rem)}
+  .clock span{font-size:.5rem;letter-spacing:.14em;margin-top:.25rem}
   .copy .chip,.copy .eyebrow{display:none}
-  .copy h1{font-size:clamp(2.3rem,10.5vw,3rem);margin-top:.2rem;line-height:1}
-  .copy .sub{font-size:.95rem;margin-top:.5rem;max-width:none}
-  .panelwrap .cta{width:100%;justify-content:center;margin-top:.7rem;min-height:54px}
+  .copy{text-align:center}
+  .copy h1{font-size:clamp(2.2rem,9.4vw,2.7rem);margin-top:.4rem;line-height:1.02}
+  .copy .sub{font-size:.98rem;line-height:1.5;margin:.9rem auto 0;max-width:28ch}
+  .panelwrap{text-align:center}
+  .panelwrap .cta{width:100%;max-width:22rem;justify-content:center;margin-top:.4rem;min-height:56px}
+  .foot{padding-bottom:calc(4rem + env(safe-area-inset-bottom,0px))}
 }
 </style>
 <script>document.querySelectorAll('.optnav [data-n]').forEach(a => { if (location.pathname.includes('optie-' + a.dataset.n)) a.setAttribute('aria-current', 'page'); });</script>
