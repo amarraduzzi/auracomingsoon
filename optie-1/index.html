@@ -238,6 +238,22 @@ html[dir="rtl"] .hg-txt span { letter-spacing: 0; text-transform: none; font-siz
 h1 em{display:inline-block;transition:opacity .6s ease,transform .6s ease}
 h1 em.out{opacity:0;transform:translateY(.15em)}
 @media (prefers-reduced-motion:reduce){.hbring{display:none}.clock .sec b{animation:none}}
+/* ---- één scherm: doos + klok altijd in beeld ---- */
+@media (max-width:939px){
+  .hero{grid-template-areas:"orbit" "copy" "panel";gap:1rem;padding-top:.4rem}
+  .orbit{width:min(118%,max(17rem,calc((100svh - 14rem) * 1.25)));margin-inline:0}
+  .hint{margin-top:.7rem}.hint i{display:none}
+  .clock{margin-top:.5rem}
+  .clock>div{min-width:3.7rem;padding:.45rem .4rem .4rem}
+}
+@media (min-width:940px){
+  .hero{padding-block:.6rem 1rem}
+  .orbit{width:min(112%,940px,max(22rem,calc((100svh - 15.5rem) * 1.4286)));margin-inline:0}
+  .copy h1{font-size:clamp(2.8rem,min(5.4vw,11svh),6rem)}
+  .copy .sub{margin-top:.9rem}.chip{margin-bottom:.8rem}
+  .panel{min-height:0}textarea.field{min-height:3.6rem}
+}
+@media (max-height:760px){.hint i{display:none}.hint{margin-top:.6rem}}
 </style>
 </head>
 <body>
