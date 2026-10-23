@@ -254,6 +254,20 @@ h1 em.out{opacity:0;transform:translateY(.15em)}
   .panel{min-height:0}textarea.field{min-height:3.6rem}
 }
 @media (max-height:760px){.hint i{display:none}.hint{margin-top:.6rem}}
+/* ---- berichtbalk ---- */
+.panel{background:none;box-shadow:none;padding:0;border-radius:0;max-width:30rem}
+.panel h2{font-size:clamp(1.3rem,3.2vw,1.75rem);margin-bottom:.7rem}
+.bar{display:flex;align-items:flex-end;gap:.4rem;padding:.4rem .4rem .4rem 1.2rem;border-radius:1.9rem;background:var(--creme);box-shadow:0 14px 30px -16px rgba(68,38,61,.55);border:1.5px solid transparent;transition:border-color .2s,box-shadow .2s}
+.bar:focus-within{border-color:var(--rose-deep);box-shadow:0 14px 30px -14px rgba(68,38,61,.6),0 0 0 4px rgba(255,255,255,.35)}
+.bar .field{flex:1;min-width:0;margin:0;border:0;box-shadow:none!important;padding:.65rem 0;min-height:0;height:auto;max-height:96px;font-size:1.1rem;line-height:1.35;overflow-y:auto}
+.btn.send{flex:none;width:46px;min-height:46px;height:46px;padding:0;border-radius:50%;margin:0;align-self:flex-end}
+.panel .btn.send{width:46px;margin:0}
+.panel .row{margin-top:.55rem;padding-inline:1.2rem;flex-wrap:nowrap;align-items:flex-start}
+.panel .help{margin:0;font-size:.8rem;opacity:.85}
+.panel .count{visibility:hidden;flex:none}
+.panel .err{margin:.2rem 1.2rem 0;min-height:1.2em}
+.panel .link{margin-inline:1.2rem;padding:.3rem 0;font-size:.82rem}
+.panel [data-s="mail"] .bar{margin-top:.2rem}
 </style>
 </head>
 <body>
@@ -311,21 +325,18 @@ h1 em.out{opacity:0;transform:translateY(.15em)}
       <div class="panel" id="panel" data-state="q">
         <form data-s="q" id="qForm" novalidate>
           <h2 class="display" data-i="pT">Pose ta première <em>question.</em></h2>
-          <p class="help" data-i="pH">Sans nom, sans pression. Elle trouvera sa place dans la box.</p>
           <label class="sr" for="qIn" data-i="qLabel">Ta question</label>
-          <textarea class="field" id="qIn" maxlength="140" rows="2" data-ph="qPh" placeholder="Écris-la avec tes mots…"></textarea>
-          <div class="row"><span class="count" id="qCount" aria-hidden="true">0 / 140</span></div>
+          <div class="bar"><textarea class="field" id="qIn" maxlength="140" rows="1" data-ph="qPh" placeholder="Écris-la avec tes mots…"></textarea><button class="btn send" type="submit" id="qBtn"><span class="sr" data-i="send">Glisser dans la box</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><use href="#s-arr"/></svg></button></div>
+          <div class="row"><p class="help" data-i="pH">Sans nom, sans pression. Elle trouvera sa place dans la box.</p><span class="count" id="qCount" aria-hidden="true">0 / 140</span></div>
           <p class="err" id="qErr" role="alert"></p>
-          <button class="btn" type="submit" id="qBtn"><span data-i="send">Glisser dans la box</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><use href="#s-arr"/></svg></button>
-          <div><button class="link" type="button" id="skip" data-i="skip">ou laisse seulement ton e-mail</button></div>
+          <button class="link" type="button" id="skip" data-i="skip">ou laisse seulement ton e-mail</button>
         </form>
         <form data-s="mail" id="mForm" novalidate>
           <h2 class="display" id="mTitle" data-i="okT">Elle a <em>sa place.</em></h2>
           <p class="help" data-i="okP">Laisse ton e-mail, on te prévient dès l’ouverture.</p>
           <label class="sr" for="mIn" data-i="mLabel">Ton e-mail</label>
-          <input class="field" id="mIn" type="email" inputmode="email" autocomplete="email" data-ph="mPh" placeholder="ton@email.com">
+          <div class="bar"><input class="field" id="mIn" type="email" inputmode="email" autocomplete="email" data-ph="mPh" placeholder="ton@email.com"><button class="btn send" type="submit" id="mBtn"><span class="sr" data-i="notify">Me prévenir</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><use href="#s-arr"/></svg></button></div>
           <p class="err" id="mErr" role="alert"></p>
-          <button class="btn" type="submit" id="mBtn"><span data-i="notify">Me prévenir</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><use href="#s-arr"/></svg></button>
         </form>
         <div data-s="done" aria-live="polite">
           <svg class="done-heart" viewBox="0 0 100 92" aria-hidden="true"><use href="#s-heart"/></svg>
@@ -537,7 +548,10 @@ function intro() {
 /* ============ Formulaire : glisser sa question dans la box ============ */
 const panel = $("#panel"), qIn = $("#qIn"), qCount = $("#qCount");
 const state = s => { panel.dataset.state = s; };
-qIn.addEventListener("input", () => { qCount.textContent = qIn.value.length + " / 140"; $("#qErr").textContent = ""; });
+const grow = () => { qIn.style.height = "auto"; qIn.style.height = Math.min(qIn.scrollHeight, 96) + "px"; qCount.style.visibility = qIn.value.length > 90 ? "visible" : "hidden"; };
+qIn.addEventListener("input", () => { qCount.textContent = qIn.value.length + " / 140"; $("#qErr").textContent = ""; grow(); });
+qIn.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); $("#qForm").requestSubmit(); } });
+document.addEventListener("click", e => { const c = e.target.closest(".orb.q:not(.mine)"); const t = c && c.querySelector(".qt"); if (t && !qIn.value.trim()) { qIn.value = t.textContent.trim().slice(0, 140); qIn.dispatchEvent(new Event("input")); } });
 $("#skip").addEventListener("click", () => { $("#mTitle").dataset.i = "mT"; fill($("#mTitle")); state("mail"); $("#mIn").focus({ preventScroll: true }); });
 
 $("#qForm").addEventListener("submit", e => {
@@ -546,7 +560,7 @@ $("#qForm").addEventListener("submit", e => {
   $("#qBtn").disabled = true; sendQuestion(v);
 });
 function sendQuestion(v) {
-  const done = () => { addMine(v); $("#mTitle").dataset.i = "okT"; fill($("#mTitle")); state("mail"); qIn.value = ""; qCount.textContent = "0 / 140"; $("#qBtn").disabled = false; };
+  const done = () => { addMine(v); $("#mTitle").dataset.i = "okT"; fill($("#mTitle")); state("mail"); qIn.value = ""; qCount.textContent = "0 / 140"; grow(); $("#qBtn").disabled = false; };
   if (reduce) { done(); return; }
   const r = qIn.getBoundingClientRect(), note = document.createElement("p"); note.className = "fly"; note.textContent = v; note.dir = "auto";
   const w = Math.min(r.width, 280); note.style.cssText = `left:${r.left}px;top:${r.top}px;width:${w}px`; document.body.appendChild(note);
